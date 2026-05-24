@@ -1,0 +1,53 @@
+table dim_seller
+	lineageTag: 100a3f8c-f660-448f-b4f3-4428e8801b09
+	sourceLineageTag: [dbo].[dim_seller]
+
+	column seller_key
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 8194c5e6-08bb-4f41-8125-b80d99e9bce4
+		sourceLineageTag: seller_key
+		summarizeBy: none
+		sourceColumn: seller_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_city
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 0945bbf3-23ba-435d-8256-9c4480c610e5
+		sourceLineageTag: seller_city
+		summarizeBy: none
+		sourceColumn: seller_city
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_state
+		dataType: string
+		sourceProviderType: varchar(5)
+		lineageTag: 27715070-6e6a-4a93-b1a5-42d1df571e2e
+		sourceLineageTag: seller_state
+		summarizeBy: none
+		sourceColumn: seller_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_zip_code_prefix
+		dataType: string
+		sourceProviderType: varchar(10)
+		lineageTag: d73f393c-f50f-4f2c-a829-a8324cdd2479
+		sourceLineageTag: seller_zip_code_prefix
+		summarizeBy: none
+		sourceColumn: seller_zip_code_prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_seller = entity
+		mode: directLake
+		source
+			entityName: dim_seller
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

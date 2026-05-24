@@ -1,0 +1,63 @@
+table dim_customer
+	lineageTag: 033790d4-2d72-4bd5-b095-63c8a91191f7
+	sourceLineageTag: [dbo].[dim_customer]
+
+	column customer_key
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 6b53f702-960f-469b-8df6-edf1c329e67a
+		sourceLineageTag: customer_key
+		summarizeBy: none
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_unique_id
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 286f4802-b8a6-446c-a344-49e23cf9509a
+		sourceLineageTag: customer_unique_id
+		summarizeBy: none
+		sourceColumn: customer_unique_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_city
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 092ec016-a01c-4fba-8b70-3cf7b44ffc93
+		sourceLineageTag: customer_city
+		summarizeBy: none
+		sourceColumn: customer_city
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_state
+		dataType: string
+		sourceProviderType: varchar(5)
+		lineageTag: 74ce2e00-2ee6-4e55-a6a5-1cdad9d77295
+		sourceLineageTag: customer_state
+		summarizeBy: none
+		sourceColumn: customer_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_zip_code_prefix
+		dataType: string
+		sourceProviderType: varchar(10)
+		lineageTag: 569836ec-ee2f-4834-aa07-ed3f36d98754
+		sourceLineageTag: customer_zip_code_prefix
+		summarizeBy: none
+		sourceColumn: customer_zip_code_prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_customer = entity
+		mode: directLake
+		source
+			entityName: dim_customer
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

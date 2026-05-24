@@ -1,0 +1,203 @@
+table Measure
+	lineageTag: d22e17a1-d87c-4942-acd8-3e203f4e1fe8
+
+	measure Today =
+			
+			VAR DataMaxDate = MAX(dim_date[date_key])
+			RETURN DataMaxDate
+		formatString: General Date
+		displayFolder: 00 Helpers
+		lineageTag: 61c83879-704c-41e1-a4f4-a3971f360474
+
+	measure Revenue = ```
+			
+			CALCULATE (
+			    SUM ( fact_sales[revenue] ),
+			    fact_sales[is_revenue_recognised] = TRUE ()
+			)
+			
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: 01 Revenue
+		lineageTag: ee85584f-0caf-4fc0-9b21-02c49211c2f9
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue Yesterday' = ```
+			
+			VAR Yesterday = [Today] - 1
+			RETURN
+			    CALCULATE (
+			        [Revenue],
+			        dim_date[date_key] = Yesterday
+			    )
+			 
+			
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: 01 Revenue
+		lineageTag: 809fb290-722c-4471-aceb-3916d694b64e
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue Same Day LY' = ```
+			
+			VAR SameDayLastYear = DATE ( YEAR ( [Today] ) - 1, MONTH ( [Today] ), DAY ( [Today] ) ) - 1
+			RETURN
+			    CALCULATE (
+			        [Revenue],
+			        dim_date[date_key] = SameDayLastYear
+			    )
+			
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: 01 Revenue
+		lineageTag: 5156b360-a1c0-4566-b1da-40e755f9d0e2
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue YoY Variance' = ```
+			
+			[Revenue Yesterday] - [Revenue Same Day LY]
+			
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: 01 Revenue
+		lineageTag: a898f75b-d974-4fc5-b65e-26019d336f60
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue YoY %' =
+			
+			DIVIDE (
+			    [Revenue YoY Variance],
+			    [Revenue Same Day LY]
+			)
+		displayFolder: 01 Revenue
+		lineageTag: 5633d31a-9d9f-486f-8c75-c77e9c73e681
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Currently Overdue Orders' =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( fact_sales[order_id] ),
+			    fact_sales[is_currently_overdue] = TRUE ()
+			)
+		formatString: 0
+		displayFolder: 02 Operations
+		lineageTag: c9e3d8ea-f6c8-4664-a72f-f24db25de804
+
+	measure 'Avg Days Overdue' = ```
+			
+			VAR OverdueOrders =
+			    CALCULATETABLE (
+			        VALUES ( fact_sales[order_id] ),
+			        fact_sales[is_currently_overdue] = TRUE ()
+			    )
+			RETURN
+			    AVERAGEX (
+			        OverdueOrders,
+			        DATEDIFF (
+			            CALCULATE ( MAX ( fact_sales[order_estimated_delivery_date] ) ),
+			            [Today],
+			            DAY
+			        )
+			    )
+			 
+			
+			```
+		displayFolder: 02 Operations
+		lineageTag: 7ad1f1aa-58bf-4256-bb07-9ba3ef0a1d15
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Items at SLA Risk' = ```
+			
+			CALCULATE (
+			    COUNTROWS ( fact_sales ),
+			    FILTER( fact_sales,
+			    fact_sales[shipping_limit_date] < [Today] && 
+			    fact_sales[order_status] <> "canceled" &&
+			    fact_sales[order_status] <> "unavailable") ,    
+			    ISBLANK ( fact_sales[order_delivered_carrier_date])
+			)
+			```
+		formatString: 0
+		displayFolder: 03 Seller SLA
+		lineageTag: 7bf5b208-8324-4a25-9cb9-eb318f2ee26e
+
+	measure 'Revenue at SLA Risk' = ```
+			
+			CALCULATE (
+			    SUM ( fact_sales[revenue] ),
+			    FILTER( fact_sales,
+			    fact_sales[shipping_limit_date] < [Today] && 
+			    fact_sales[order_status] <> "canceled" &&
+			    fact_sales[order_status] <> "unavailable") ,    
+			    ISBLANK ( fact_sales[order_delivered_carrier_date])
+			)
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		displayFolder: 03 Seller SLA
+		lineageTag: e3788678-de3e-4b35-8da3-3aaa447468c1
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Sellers at Risk' = ```
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( fact_sales[seller_key] ),
+			    FILTER( fact_sales,
+			    fact_sales[shipping_limit_date] < [Today] && 
+			    fact_sales[order_status] <> "canceled" &&
+			    fact_sales[order_status] <> "unavailable") ,    
+			    ISBLANK ( fact_sales[order_delivered_carrier_date])
+			)
+			
+			```
+		formatString: 0
+		displayFolder: 03 Seller SLA
+		lineageTag: 32ccb3da-b2dd-4b7d-b63e-5850bbc46c72
+
+	measure 'Seller Risk Tier' = ```
+			
+			VAR MaxDaysOverdue =
+			    MAXX (
+			        FILTER (
+			            fact_sales,
+			            fact_sales[shipping_limit_date] < [Today]
+			                && ISBLANK ( fact_sales[order_delivered_carrier_date] )
+			                && NOT ( fact_sales[order_status] IN { "canceled", "unavailable" } )
+			        ),
+			        DATEDIFF ( fact_sales[shipping_limit_date], [Today], DAY )
+			    )
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        MaxDaysOverdue >= 14, "CRITICAL",
+			        MaxDaysOverdue >=  7, "HIGH",
+			        MaxDaysOverdue >=  3, "MEDIUM",
+			        MaxDaysOverdue >=  0, "LOW",
+			                              "OK"
+			    )
+			
+			```
+		displayFolder: 03 Seller SLA
+		lineageTag: f4a1b745-6840-4b4c-a528-88a0b99daa82
+
+	column Column
+		formatString: 0
+		lineageTag: f9bc6f39-b6df-4070-bf5f-6744def6a42a
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Measure = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = e576e182ae94451ab001d1735313f513
+

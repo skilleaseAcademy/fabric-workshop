@@ -1,0 +1,87 @@
+table dim_product
+	lineageTag: 0caa2199-3fd2-4f3d-9a5e-8b96ec2c84bf
+	sourceLineageTag: [dbo].[dim_product]
+
+	column product_key
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 488feca0-da30-4f90-810e-e1c0b73896b1
+		sourceLineageTag: product_key
+		summarizeBy: none
+		sourceColumn: product_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column category_pt
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: ac3de13a-a646-4962-8fe6-d20e2a96b10b
+		sourceLineageTag: category_pt
+		summarizeBy: none
+		sourceColumn: category_pt
+
+		annotation SummarizationSetBy = Automatic
+
+	column category_en
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 2638fa94-1ab8-4a1a-b57e-8e8b327d456f
+		sourceLineageTag: category_en
+		summarizeBy: none
+		sourceColumn: category_en
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_weight_g
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 65aab8d0-d57b-421b-a829-ca3d96dd416d
+		sourceLineageTag: product_weight_g
+		summarizeBy: none
+		sourceColumn: product_weight_g
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_length_cm
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: cd93be18-c821-43d7-9199-79a235e5748d
+		sourceLineageTag: product_length_cm
+		summarizeBy: none
+		sourceColumn: product_length_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_height_cm
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: fc658803-f397-4fc0-ae8e-9c088da5c4fa
+		sourceLineageTag: product_height_cm
+		summarizeBy: none
+		sourceColumn: product_height_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_width_cm
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 32be9e54-cab1-4cd2-ad8d-dae9ead6eb18
+		sourceLineageTag: product_width_cm
+		summarizeBy: none
+		sourceColumn: product_width_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_product = entity
+		mode: directLake
+		source
+			entityName: dim_product
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

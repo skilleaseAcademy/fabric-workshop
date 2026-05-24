@@ -1,0 +1,201 @@
+table fact_sales
+	lineageTag: a36f9cc7-b4ff-4004-9bd3-4aafcf688077
+	sourceLineageTag: [dbo].[fact_sales]
+
+	column order_id
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: e38eb02b-87c0-432b-b4b9-c6c09e759248
+		sourceLineageTag: order_id
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_item_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d103d72d-d6e2-470d-909a-f1a584a6341a
+		sourceLineageTag: order_item_id
+		summarizeBy: sum
+		sourceColumn: order_item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date_key
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: d7202bf3-63d2-4a01-b53e-64d59be7692a
+		sourceLineageTag: order_date_key
+		summarizeBy: none
+		sourceColumn: order_date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_key
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: ef80b384-0d1e-4dfc-89e9-8b785c29b3f6
+		sourceLineageTag: customer_key
+		summarizeBy: none
+		sourceColumn: customer_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_key
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 29d2ad9d-fb76-47da-a959-fc4e770c07d7
+		sourceLineageTag: seller_key
+		summarizeBy: none
+		sourceColumn: seller_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_key
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 95a73a4e-ae36-46ea-9dbd-7101199ef817
+		sourceLineageTag: product_key
+		summarizeBy: none
+		sourceColumn: product_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column revenue
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: decimal(12, 2)
+		lineageTag: 4c076c03-8fa9-4ab3-88ad-812ddc4d95f6
+		sourceLineageTag: revenue
+		summarizeBy: sum
+		sourceColumn: revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column freight
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: decimal(12, 2)
+		lineageTag: 56b3cd1d-c6ed-4270-8819-41c80dfe9b4d
+		sourceLineageTag: freight
+		summarizeBy: sum
+		sourceColumn: freight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column gross_value
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: decimal(12, 2)
+		lineageTag: bd34cd12-631d-4803-89de-4e77b33e2f93
+		sourceLineageTag: gross_value
+		summarizeBy: sum
+		sourceColumn: gross_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column is_late_delivery
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 9befa08e-6b9a-48f1-b3ef-f649878b6d52
+		sourceLineageTag: is_late_delivery
+		summarizeBy: none
+		sourceColumn: is_late_delivery
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_currently_overdue
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 36878112-9420-428f-a2f9-7f2be1419f72
+		sourceLineageTag: is_currently_overdue
+		summarizeBy: none
+		sourceColumn: is_currently_overdue
+
+		annotation SummarizationSetBy = Automatic
+
+	column shipping_limit_date
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: e4771f6d-9b8a-490e-9e57-e60f63a983e3
+		sourceLineageTag: shipping_limit_date
+		summarizeBy: none
+		sourceColumn: shipping_limit_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_delivered_carrier_date
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 03a6a00d-024b-48ec-b089-4e18952cf3d3
+		sourceLineageTag: order_delivered_carrier_date
+		summarizeBy: none
+		sourceColumn: order_delivered_carrier_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		sourceProviderType: varchar(20)
+		lineageTag: 4684b725-c1e1-4e1f-908c-8bacc4869305
+		sourceLineageTag: order_status
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_estimated_delivery_date
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: e18aa93d-2072-4a5d-aa6c-550dc2871b24
+		sourceLineageTag: order_estimated_delivery_date
+		summarizeBy: none
+		sourceColumn: order_estimated_delivery_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_delivered_customer_date
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 24ec79d9-6d6a-4b9c-b4e0-1233d66b516c
+		sourceLineageTag: order_delivered_customer_date
+		summarizeBy: none
+		sourceColumn: order_delivered_customer_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_revenue_recognised
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: ce569242-938c-41cb-96b7-014dc70712a6
+		sourceLineageTag: is_revenue_recognised
+		summarizeBy: none
+		sourceColumn: is_revenue_recognised
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_sales = entity
+		mode: directLake
+		source
+			entityName: fact_sales
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+
